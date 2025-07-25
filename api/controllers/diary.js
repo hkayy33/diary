@@ -28,10 +28,17 @@ async function searchEntry(req, res) {
         res.status(500).json({ error: error.message })
 
     }
+}
 
-
-
+async function specificEntry(req, res) {
+    try {
+        const id = req.params.id
+        const diaryEntry = await Diary.getOneById(id)
+        res.status(200).json(diaryEntry)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
 }
 module.exports = {
-    entries, createEntry, searchEntry
+    entries, createEntry, searchEntry, specificEntry
 }

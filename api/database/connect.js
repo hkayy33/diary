@@ -1,11 +1,12 @@
-const fs = require('fs');
-require("dotenv").config(); 
+const { Pool } = require("pg");
 
-const sql = fs.readFileSync(__dirname + '/setup.sql').toString();
+const db = new Pool({
+    connectionString: process.env.DB_URL // using the db url from the env
+    
+})
 
-const db = require("./connect");
+console.log("DB connection established.");
 
-db.query(sql)
-    .then(data => console.log("Set-up complete."))
-    .catch(error => console.log(error));
+module.exports = db;
+
 

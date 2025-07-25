@@ -5,7 +5,7 @@ const diaryRouter = Router();
 
 diaryRouter.get('/', diaryController.entries);
 diaryRouter.post('/', diaryController.createEntry);
-// diaryRouter.post(“/search”, diaryController.searchEntry);
+diaryRouter.get('/search', diaryController.searchEntry);
 // diaryRouter.get(“/:id”, diaryController.specificEntry);
 // diaryRouter.patch(“/:id”, diaryController.updateEntry);
 // diaryRouter.delete(“/:id”, diaryController.deleteEntry);

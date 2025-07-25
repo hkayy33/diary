@@ -22,7 +22,23 @@ class Diary {
         return response.rows.map(entry => new Diary(entry));
     }
 
-    
+    static async create(data) {
+        
+            const { user_id, entry_date, text, category} = data;
+            const existingEntry = await db.query("SELECT text from diary_entries WHERE text = $1", [text])
+
+            if(existingEntry.rows.length > 0){
+                throw new Error("Entry already exists! enter a new one");
+            }
+            else{
+                const response = await db.query("INSERT INTO diary_entries (user_id,entry_date,text,category) VALUES ($1,$2,$3,$4) RETURNING *;", [user_id,entry_date,text,category]);
+                return new Diary(response.rows[0]);
+            }
+            
+
+    }
+
+
 
 }
 

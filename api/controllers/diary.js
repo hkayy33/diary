@@ -10,6 +10,15 @@ async function entries(req, res) {
     }
 }
 
+async function createEntry (req,res){
+    try {
+        const entry = await Diary.create(req.body) // access all information inside the request body and pass it onto the model func
+        res.status(200).json(entry)
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+
+}
 module.exports = {
-  entries
+  entries,createEntry
 }

@@ -23,24 +23,24 @@ class Diary {
     }
 
     static async create(data) {
-        
-            const { user_id, entry_date, text, category} = data;
-            const existingEntry = await db.query("SELECT text from diary_entries WHERE text = $1", [text])
 
-            if(existingEntry.rows.length > 0){
-                throw new Error("Entry already exists! enter a new one");
-            }
-            else{
-                const response = await db.query("INSERT INTO diary_entries (user_id,entry_date,text,category) VALUES ($1,$2,$3,$4) RETURNING *;", [user_id,entry_date,text,category]);
-                return new Diary(response.rows[0]);
-            }
+        const { user_id, entry_date, text, category } = data;
+        const existingEntry = await db.query("SELECT text from diary_entries WHERE text = $1", [text])
+
+        if (existingEntry.rows.length > 0) {
+            throw new Error("Entry already exists! enter a new one");
+        }
+        else {
+            const response = await db.query("INSERT INTO diary_entries (user_id,entry_date,text,category) VALUES ($1,$2,$3,$4) RETURNING *;", [user_id, entry_date, text, category]);
+            return new Diary(response.rows[0]);
+        }
     }
 
-    static async search(data){
-        const {entry_date} = data;
-        const queryDB = await db.query("SELECT entry_date from diary_entries where entry_date = $1",[entry_date])
+    static async search(data) {
+        const { entry_date } = data;
+        const queryDB = await db.query("SELECT * from diary_entries where entry_date = $1", [entry_date])
         if (queryDB.rows.length > 0) {
-            return new Diary(queryDB.rows[0])
+            return queryDB.rows.map(entry => new Diary(entry));
         } else {
             throw new Error("Entry does not exist");
         }
